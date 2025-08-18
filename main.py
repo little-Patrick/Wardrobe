@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QApplication,
     QMessageBox,
-    QStatusBar,
     QListWidgetItem,
     QStyle,
     QListView,
@@ -34,6 +33,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if hasattr(self, "run_model_btn"):
             self.run_model_btn.clicked.connect(self.run_churn_model)
 
+    # Add File Button
     def add_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self,
@@ -48,10 +48,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             except Exception as e:
                 QMessageBox.critical(self, "Error", str(e))
 
+    # Manage Database Page
     def show_manage_db(self):
         self.populate_db_list()
         self.mainStackedWidget.setCurrentWidget(self.manage_db_pg)
 
+    def populate_db_list(self):
+        self.listWidget.clear()
+        db_dir = Path(database.DB_DIR)
+        db_dir.mkdir(parents=True, exist_ok=True)
+        icon = QApplication.style().standardIcon(QStyle.StandardPixmap.SP_FileIcon)
+        count = 0
+        for db_file in sorted(db_dir.glob("*.duckdb")):
+            item = QListWidgetItem(icon, db_file.name)
+            item.setData(Qt.ItemDataRole.UserRole, str(db_file))
+            self.listWidget.addItem(item)
+            count += 1
+        self.statusbar.showMessage(f"Found {count} database(s)")
+
+
+    # Analytics Page
     def _setup_analytics_dropdown(self):
         menu = QMenu(self)
         churn_action = menu.addAction("Churn")
@@ -59,7 +75,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         tool_btn = self.toolBar.widgetForAction(self.actionAnalytics)
         if isinstance(tool_btn, QToolButton):
-            tool_btn.setPopupMode(QToolButton.InstantPopup)
+            tool_btn.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
             tool_btn.setMenu(menu)
         else:
             self.actionAnalytics.setMenu(menu)
@@ -78,18 +94,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.analyticsHeader.setText(f"Analytics: {model_name}")
         self.statusbar.showMessage(f"Showing {model_name} analytics")
 
-    def populate_db_list(self):
-        self.listWidget.clear()
-        db_dir = Path(database.DB_DIR)
-        db_dir.mkdir(parents=True, exist_ok=True)
-        icon = QApplication.style().standardIcon(QStyle.StandardPixmap.SP_FileIcon)
-        count = 0
-        for db_file in sorted(db_dir.glob("*.duckdb")):
-            item = QListWidgetItem(icon, db_file.name)
-            item.setData(Qt.ItemDataRole.UserRole, str(db_file))
-            self.listWidget.addItem(item)
-            count += 1
-        self.statusbar.showMessage(f"Found {count} database(s)")
 
     def run_churn_model(self):
         # Ask user to select the DuckDB database to run the model on
@@ -105,15 +109,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage("Running churn model…")
         result = customer_churn.predict_churn(db_path)
         if isinstance(result, dict):
-            msg = (
-                f"Churn model completed.\n"
-                f"Predictions DB: {result.get('pred_db')}\n"
-                f"Probabilities DB: {result.get('prob_db')}"
-            )
-            QMessageBox.information(self, "Churn Model", msg)
+            # msg = (
+            #     f"Churn model completed.\n"
+            #     f"Predictions DB: {result.get('pred_db')}\n"
+            #     f"Probabilities DB: {result.get('prob_db')}"
+            # )
+            # QMessageBox.information(self, "Churn Model", msg)
             self.statusbar.showMessage("Churn model completed")
         else:
-            # Treat any non-dict as an error message string
             QMessageBox.warning(self, "Churn Model", str(result))
             self.statusbar.showMessage("Churn model finished with warnings")
 

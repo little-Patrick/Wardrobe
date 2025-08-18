@@ -2,12 +2,23 @@ import duckdb
 import os
 import joblib
 import pandas as pd
+import warnings
+from functools import lru_cache
 from pathlib import Path
 from utils.database import get_user_db_path, _safe_table_name
 
-# Load the saved model
+# Load path only; defer actual model load to runtime
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "customer_churn_model.pkl")
-model = joblib.load(MODEL_PATH)
+
+@lru_cache(maxsize=1)
+def _get_model():
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "once",
+            category=UserWarning,
+            module=r"xgboost\..*",
+        )
+        return joblib.load(MODEL_PATH)
 
 def predict_churn(duckdb_db_path: str):
     print("Model start")
@@ -31,17 +42,20 @@ def predict_churn(duckdb_db_path: str):
             "cart_abandonment_rate", "loyalty_member", "payment_failures_12m", "device_type",
             "discount_usage_rate", "days_since_last_active", "satisfaction_score"
         ]
-        
         if not all(col in df.columns for col in required_columns):
             return "Database table is missing required columns."
-        
+
+        # Lazy-load model here to avoid warning on app startup
+        model = _get_model()
+
         # Make predictions
-        predictions = model.predict(df[required_columns])
-        probabilities = model.predict_proba(df[required_columns])[:, 1]
-        
+        X = df[required_columns]
+        predictions = model.predict(X)
+        probabilities = model.predict_proba(X)[:, 1]
+
         # Add predictions and probabilities to the DataFrame
-        df['churn_prediction'] = predictions
-        df['churn_probability'] = probabilities
+        df["churn_prediction"] = predictions
+        df["churn_probability"] = probabilities
 
         # Persist results to separate DuckDB databases
         pred_db_path = get_user_db_path("model_churn_pred")
@@ -56,7 +70,6 @@ def predict_churn(duckdb_db_path: str):
         prob_conn.execute('CREATE OR REPLACE TABLE "ChurnProbability" AS SELECT * FROM df')
 
         print("model end")
-
         return {"pred_db": str(pred_db_path), "prob_db": str(prob_db_path)}
 
     except Exception as e:
