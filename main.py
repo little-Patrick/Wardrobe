@@ -13,10 +13,12 @@ from PySide6.QtWidgets import (
     QMenu,
     QToolButton,
     QLabel,
-    QVBoxLayout,
+    QFormLayout,
 )
 from utils import database
 from models import customer_churn
+from views import plot_churn_graphs, create_database_tables
+ 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -83,20 +85,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def show_analytics_for_model(self, model_name: str):
         self.mainStackedWidget.setCurrentWidget(self.analytics_pg)
-
-        if not hasattr(self, "analyticsHeader"):
-            layout = self.general_tab.layout()
-            if layout is None:
-                layout = QVBoxLayout(self.general_tab)
-            self.analyticsHeader = QLabel(self.general_tab)
-            layout.addWidget(self.analyticsHeader)
-
-        self.analyticsHeader.setText(f"Analytics: {model_name}")
         self.statusbar.showMessage(f"Showing {model_name} analytics")
 
 
+    # Churn Model
     def run_churn_model(self):
-        # Ask user to select the DuckDB database to run the model on
         start_dir = database.DB_DIR
         db_path, _ = QFileDialog.getOpenFileName(
             self,
@@ -107,19 +100,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not db_path:
             return
         self.statusbar.showMessage("Running churn model…")
-        result = customer_churn.predict_churn(db_path)
-        if isinstance(result, dict):
-            # msg = (
-            #     f"Churn model completed.\n"
-            #     f"Predictions DB: {result.get('pred_db')}\n"
-            #     f"Probabilities DB: {result.get('prob_db')}"
-            # )
-            # QMessageBox.information(self, "Churn Model", msg)
+        results = customer_churn.predict_churn(db_path)
+        
+        if isinstance(results, dict):
             self.statusbar.showMessage("Churn model completed")
+            self._update_churn_overview(results)
+            plot_churn_graphs(self.graphs_tab)
+            create_database_tables(self.tableView)
         else:
-            QMessageBox.warning(self, "Churn Model", str(result))
+            QMessageBox.warning(self, "Churn Model", str(results))
             self.statusbar.showMessage("Churn model finished with warnings")
 
+    def _clear_layout(self, layout):
+        while layout.count():
+            item = layout.takeAt(0)
+            w = item.widget()
+            if w is not None:
+                w.deleteLater()
+            child = item.layout()
+            if child is not None:
+                self._clear_layout(child)
+
+    def _update_churn_overview(self, summary: dict):
+        layout = QFormLayout(self.model_overview_widget)
+        self.model_overview_widget.setLayout(layout)
+        self._clear_layout(layout)
+
+        for key, value in summary.items():
+            layout.addRow(QLabel(str(key), self.model_overview_widget), 
+                          QLabel(str(value), self.model_overview_widget))
+        return 
 
 app = QApplication(sys.argv)
 window = MainWindow()
