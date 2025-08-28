@@ -16,18 +16,18 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QHeaderView,
-    QListWidget, QListWidgetItem, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
-    QStatusBar, QTabWidget, QTableView, QTextEdit,
-    QToolBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QListWidget,
+    QListWidgetItem, QMainWindow, QMenuBar, QPushButton,
+    QSizePolicy, QStackedWidget, QStatusBar, QTabWidget,
+    QTableView, QTextEdit, QToolBar, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(817, 631)
-        MainWindow.setStyleSheet(u"background=rgb(114, 121, 172)")
+        MainWindow.resize(833, 598)
+        MainWindow.setStyleSheet(u"background-color: rgb(255, 229, 204);")
         self.actionManage_Database = QAction(MainWindow)
         self.actionManage_Database.setObjectName(u"actionManage_Database")
         icon = QIcon(QIcon.fromTheme(u"folder-visiting"))
@@ -49,6 +49,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.mainStackedWidget = QStackedWidget(self.centralwidget)
         self.mainStackedWidget.setObjectName(u"mainStackedWidget")
+        self.mainStackedWidget.setStyleSheet(u"background=qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 178, 102, 255), stop:0.55 rgba(235, 148, 61, 255), stop:0.98 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 0, 0))")
         self.home_pg = QWidget()
         self.home_pg.setObjectName(u"home_pg")
         self.horizontalLayout_3 = QHBoxLayout(self.home_pg)
@@ -76,36 +77,74 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.tabWidget = QTabWidget(self.analytics_pg)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"")
+        self.tabWidget.setStyleSheet(u"QTabWidget::pane {\n"
+"    background-color: rgb(255, 229, 204); /* Match main window background */\n"
+"    border: 2px solid rgb(204, 153, 255); /* Retro border color */\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    background-color: rgb(229, 204, 255); /* Light purple for non-selected tabs */\n"
+"    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */\n"
+"    border-radius: 5px; /* Rounded corners */\n"
+"    color: black; /* Black text for better readability */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background-color: rgb(153, 102, 204); /* Darker purple for active tab */\n"
+"    color: white; /* White text for active tab */\n"
+"}\n"
+"")
         self.tabWidget.setTabPosition(QTabWidget.TabPosition.North)
         self.tabWidget.setTabShape(QTabWidget.TabShape.Triangular)
         self.general_tab = QWidget()
         self.general_tab.setObjectName(u"general_tab")
-        self.gridLayout_2 = QGridLayout(self.general_tab)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.general_tab.setStyleSheet(u"QTabWidget::pane {\n"
+"    background-color: rgb(255, 229, 204); /* Match main window background */\n"
+"    border: 2px solid rgb(204, 153, 255); /* Retro border color */\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    background-color: rgb(204, 153, 255); /* Soft purple */\n"
+"    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */\n"
+"    border-radius: 5px; /* Rounded corners */\n"
+"    color: white; /* Text color */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background-color: rgb(153, 102, 204); /* Darker purple for active tab */\n"
+"}")
+        self.verticalLayout_2 = QVBoxLayout(self.general_tab)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.run_model_btn = QPushButton(self.general_tab)
         self.run_model_btn.setObjectName(u"run_model_btn")
+        self.run_model_btn.setMaximumSize(QSize(100, 16777215))
+        self.run_model_btn.setStyleSheet(u"QPushButton {\n"
+"    background-color: rgb(255, 153, 102); /* Soft orange */\n"
+"    border: 2px solid rgb(255, 102, 51); /* Slightly darker border */\n"
+"    border-radius: 10px; /* Rounded corners */\n"
+"    color: white; /* Text color */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(255, 102, 51); /* Darker orange on hover */\n"
+"}")
 
-        self.gridLayout_2.addWidget(self.run_model_btn, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.run_model_btn)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.model_overview_widget = QWidget(self.general_tab)
+        self.model_overview_widget.setObjectName(u"model_overview_widget")
 
-        self.gridLayout_2.addItem(self.horizontalSpacer, 0, 1, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.model_overview_widget)
 
         self.tabWidget.addTab(self.general_tab, "")
         self.graphs_tab = QWidget()
         self.graphs_tab.setObjectName(u"graphs_tab")
-        self.horizontalLayout_4 = QHBoxLayout(self.graphs_tab)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-
-        self.horizontalLayout_4.addLayout(self.gridLayout)
-
         self.tabWidget.addTab(self.graphs_tab, "")
         self.table_tab = QWidget()
         self.table_tab.setObjectName(u"table_tab")
@@ -113,6 +152,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.tableView = QTableView(self.table_tab)
         self.tableView.setObjectName(u"tableView")
+        self.tableView.setStyleSheet(u"backround=rgba(255, 255, 255, 0)")
 
         self.horizontalLayout_5.addWidget(self.tableView)
 
@@ -127,7 +167,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 817, 38))
+        self.menubar.setGeometry(QRect(0, 0, 833, 38))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -144,7 +184,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainStackedWidget.setCurrentIndex(2)
+        self.mainStackedWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
 
 
