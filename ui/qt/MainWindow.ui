@@ -14,7 +14,7 @@
    <string>Wardrobe</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background=rgb(114, 121, 172)</string>
+   <string notr="true">background-color: rgb(255, 229, 204);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -24,7 +24,7 @@
        <string notr="true">background=qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 178, 102, 255), stop:0.55 rgba(235, 148, 61, 255), stop:0.98 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 0, 0))</string>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="home_pg">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -67,7 +67,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QTabWidget::pane {
+    background-color: rgb(255, 229, 204); /* Match main window background */
+    border: 2px solid rgb(204, 153, 255); /* Retro border color */
+}
+
+QTabBar::tab {
+    background-color: rgb(229, 204, 255); /* Light purple for non-selected tabs */
+    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */
+    border-radius: 5px; /* Rounded corners */
+    color: black; /* Black text for better readability */
+    font: bold 12px &quot;Courier New&quot;; /* Retro font */
+    padding: 5px; /* Padding for better spacing */
+}
+
+QTabBar::tab:selected {
+    background-color: rgb(153, 102, 204); /* Darker purple for active tab */
+    color: white; /* White text for active tab */
+}
+</string>
           </property>
           <property name="tabPosition">
            <enum>QTabWidget::TabPosition::North</enum>
@@ -76,9 +94,28 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <enum>QTabWidget::TabShape::Triangular</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="general_tab">
+           <property name="styleSheet">
+            <string notr="true">QTabWidget::pane {
+    background-color: rgb(255, 229, 204); /* Match main window background */
+    border: 2px solid rgb(204, 153, 255); /* Retro border color */
+}
+
+QTabBar::tab {
+    background-color: rgb(204, 153, 255); /* Soft purple */
+    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */
+    border-radius: 5px; /* Rounded corners */
+    color: white; /* Text color */
+    font: bold 12px &quot;Courier New&quot;; /* Retro font */
+    padding: 5px; /* Padding for better spacing */
+}
+
+QTabBar::tab:selected {
+    background-color: rgb(153, 102, 204); /* Darker purple for active tab */
+}</string>
+           </property>
            <attribute name="title">
             <string>General</string>
            </attribute>
@@ -90,6 +127,20 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 <width>100</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton {
+    background-color: rgb(255, 153, 102); /* Soft orange */
+    border: 2px solid rgb(255, 102, 51); /* Slightly darker border */
+    border-radius: 10px; /* Rounded corners */
+    color: white; /* Text color */
+    font: bold 12px &quot;Courier New&quot;; /* Retro font */
+    padding: 5px; /* Padding for better spacing */
+}
+
+QPushButton:hover {
+    background-color: rgb(255, 102, 51); /* Darker orange on hover */
+}</string>
               </property>
               <property name="text">
                <string>Run Model</string>

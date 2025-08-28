@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(833, 598)
-        MainWindow.setStyleSheet(u"background=rgb(114, 121, 172)")
+        MainWindow.setStyleSheet(u"background-color: rgb(255, 229, 204);")
         self.actionManage_Database = QAction(MainWindow)
         self.actionManage_Database.setObjectName(u"actionManage_Database")
         icon = QIcon(QIcon.fromTheme(u"folder-visiting"))
@@ -77,16 +77,63 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.tabWidget = QTabWidget(self.analytics_pg)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"")
+        self.tabWidget.setStyleSheet(u"QTabWidget::pane {\n"
+"    background-color: rgb(255, 229, 204); /* Match main window background */\n"
+"    border: 2px solid rgb(204, 153, 255); /* Retro border color */\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    background-color: rgb(229, 204, 255); /* Light purple for non-selected tabs */\n"
+"    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */\n"
+"    border-radius: 5px; /* Rounded corners */\n"
+"    color: black; /* Black text for better readability */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background-color: rgb(153, 102, 204); /* Darker purple for active tab */\n"
+"    color: white; /* White text for active tab */\n"
+"}\n"
+"")
         self.tabWidget.setTabPosition(QTabWidget.TabPosition.North)
         self.tabWidget.setTabShape(QTabWidget.TabShape.Triangular)
         self.general_tab = QWidget()
         self.general_tab.setObjectName(u"general_tab")
+        self.general_tab.setStyleSheet(u"QTabWidget::pane {\n"
+"    background-color: rgb(255, 229, 204); /* Match main window background */\n"
+"    border: 2px solid rgb(204, 153, 255); /* Retro border color */\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    background-color: rgb(204, 153, 255); /* Soft purple */\n"
+"    border: 1px solid rgb(153, 102, 204); /* Slightly darker border */\n"
+"    border-radius: 5px; /* Rounded corners */\n"
+"    color: white; /* Text color */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background-color: rgb(153, 102, 204); /* Darker purple for active tab */\n"
+"}")
         self.verticalLayout_2 = QVBoxLayout(self.general_tab)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.run_model_btn = QPushButton(self.general_tab)
         self.run_model_btn.setObjectName(u"run_model_btn")
         self.run_model_btn.setMaximumSize(QSize(100, 16777215))
+        self.run_model_btn.setStyleSheet(u"QPushButton {\n"
+"    background-color: rgb(255, 153, 102); /* Soft orange */\n"
+"    border: 2px solid rgb(255, 102, 51); /* Slightly darker border */\n"
+"    border-radius: 10px; /* Rounded corners */\n"
+"    color: white; /* Text color */\n"
+"    font: bold 12px \"Courier New\"; /* Retro font */\n"
+"    padding: 5px; /* Padding for better spacing */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(255, 102, 51); /* Darker orange on hover */\n"
+"}")
 
         self.verticalLayout_2.addWidget(self.run_model_btn)
 
@@ -137,8 +184,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainStackedWidget.setCurrentIndex(2)
-        self.tabWidget.setCurrentIndex(1)
+        self.mainStackedWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

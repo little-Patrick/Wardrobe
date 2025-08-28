@@ -31,6 +31,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.listWidget.setIconSize(QSize(48, 48))
         self.listWidget.setResizeMode(QListView.ResizeMode.Adjust)
         self._setup_analytics_dropdown()
+        self.toolBar.setStyleSheet("""
+        QToolBar {
+            background-color: rgb(255, 153, 102); /* Soft orange background */
+            border: 2px solid rgb(255, 102, 51); /* Slightly darker border */
+            border-radius: 10px; /* Rounded corners */
+            padding: 5px; /* Padding for better spacing */
+        }
+
+        QToolButton {
+            background-color: rgb(255, 178, 102); /* Lighter orange for buttons */
+            border: 1px solid rgb(255, 102, 51); /* Slightly darker border */
+            border-radius: 5px; /* Rounded corners */
+            color: white; /* Text color */
+            font: bold 12px "Courier New"; /* Retro font */
+            padding: 5px; /* Padding for better spacing */
+        }
+
+        QToolButton:hover {
+            background-color: rgb(255, 102, 51); /* Darker orange on hover */
+        }
+        """)
         # Wire the Run Model button
         if hasattr(self, "run_model_btn"):
             self.run_model_btn.clicked.connect(self.run_churn_model)
