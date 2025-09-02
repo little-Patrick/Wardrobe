@@ -7,6 +7,4 @@ TODO.md
 
 # mis
 .DS_Store
-**/__pychache/
-__pychache__/
-
+__pycache__/
