@@ -16,8 +16,8 @@ from PySide6.QtWidgets import (
     QFormLayout,
 )
 from utils import database
-from models import customer_churn
-from views import plot_churn_graphs, create_database_tables
+from models.churn import customer_churn
+from views.churn import plot_churn_graphs, create_database_tables
  
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -30,6 +30,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.listWidget.setViewMode(QListView.ViewMode.IconMode)
         self.listWidget.setIconSize(QSize(48, 48))
         self.listWidget.setResizeMode(QListView.ResizeMode.Adjust)
+        self.listWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.listWidget.customContextMenuRequested.connect(self.show_list_context_menu)
         self._setup_analytics_dropdown()
         self.toolBar.setStyleSheet("""
         QToolBar {
@@ -152,6 +154,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                           QLabel(str(value), self.model_overview_widget))
         return 
 
+    def show_list_context_menu(self, position):
+        item = self.listWidget.itemAt(position)
+        if item:
+            menu = QMenu(self)
+            delete_action = menu.addAction("Delete")
+            delete_action.triggered.connect(lambda: self.delete_db_file(item))
+            menu.exec(self.listWidget.mapToGlobal(position))
+
+    def delete_db_file(self, item):
+        file_path = item.data(Qt.ItemDataRole.UserRole)
+        confirm = QMessageBox.question(
+            self,
+            "Delete Database",
+            f"Are you sure you want to delete '{file_path}'?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if confirm == QMessageBox.StandardButton.Yes:
+            try:
+                Path(file_path).unlink()
+                self.listWidget.takeItem(self.listWidget.row(item))
+                self.statusbar.showMessage(f"Deleted database: {file_path}")
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Failed to delete file: {str(e)}")
 app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
