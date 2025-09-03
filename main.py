@@ -91,6 +91,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             count += 1
         self.statusbar.showMessage(f"Found {count} database(s)")
 
+    def delete_db_file(self, item):
+        file_path = item.data(Qt.ItemDataRole.UserRole)
+        confirm = QMessageBox.question(
+            self,
+            "Delete Database",
+            f"Are you sure you want to delete '{file_path}'?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if confirm == QMessageBox.StandardButton.Yes:
+            try:
+                Path(file_path).unlink()
+                self.listWidget.takeItem(self.listWidget.row(item))
+                self.statusbar.showMessage(f"Deleted database: {file_path}")
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Failed to delete file: {str(e)}")
 
     # Analytics Page
     def _setup_analytics_dropdown(self):
@@ -162,21 +177,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             delete_action.triggered.connect(lambda: self.delete_db_file(item))
             menu.exec(self.listWidget.mapToGlobal(position))
 
-    def delete_db_file(self, item):
-        file_path = item.data(Qt.ItemDataRole.UserRole)
-        confirm = QMessageBox.question(
-            self,
-            "Delete Database",
-            f"Are you sure you want to delete '{file_path}'?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-        )
-        if confirm == QMessageBox.StandardButton.Yes:
-            try:
-                Path(file_path).unlink()
-                self.listWidget.takeItem(self.listWidget.row(item))
-                self.statusbar.showMessage(f"Deleted database: {file_path}")
-            except Exception as e:
-                QMessageBox.critical(self, "Error", f"Failed to delete file: {str(e)}")
 app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
