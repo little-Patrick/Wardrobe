@@ -62,23 +62,8 @@ _Add screenshots or GIFs of the app in action here._
 
 ## Future Plans
 
-- Add an item return prediction model using Random Forest.
-- Develop a loan approval analytics model.
-- Enhance the analytics dashboard with more visualizations.
 
----
 
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
----
 
 ## Acknowledgments
 
