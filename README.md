@@ -1,8 +1,17 @@
-# Wardrobe App
+<h1 align='center'>Wardrobe App</h1>
+
+## About
 
 Wardrobe App is a desktop application designed for e-commerce analytics and customer management. It provides tools for database management, customer churn prediction, and data visualization, all within a modern and user-friendly interface.
 
 ---
+
+## App Overview
+
+
+https://github.com/user-attachments/assets/7e08c8db-abe5-44df-8500-5a48c1c528ad
+
+
 
 ## Features
 
@@ -43,12 +52,6 @@ Wardrobe App is a desktop application designed for e-commerce analytics and cust
 
 ---
 
-## Screenshots
-
-_Add screenshots or GIFs of the app in action here._
-
----
-
 ## Technologies Used
 
 - **Python**: Core programming language.
@@ -60,12 +63,19 @@ _Add screenshots or GIFs of the app in action here._
 
 ---
 
-## Future Plans
+## Road Map
 
+### UI
+- [ ] Make text consistant across pages
+- [ ] Better navigation bar UX
 
+### Models
+- [ ] Impliment remaining 2 models at [Wardrobe_Models](https://github.com/little-Patrick/Wardrobe_Models)
 
+### Analytics
+- [ ] User defined graphs
+- [ ] SQL injection to filter and sort databases
 
-## Acknowledgments
-
-- Inspired by the need for better e-commerce analytics tools.
-- Special thanks to the open-source community for providing the tools and libraries used in this project.
+### Automated Customer Retention
+- [ ] Automated customer emailing/notifications based on churn
+- [ ] Track customers who repeatedly show up in model analytics
